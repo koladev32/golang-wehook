@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 	"os"
 
 	redisClient "webhook/redis"
@@ -25,7 +26,7 @@ func main() {
 	err := redisClient.Subscribe(ctx, client)
 
 	if err != nil {
-		println("Error:", err)
+		log.Println("Error:", err)
 	}
 
 }
