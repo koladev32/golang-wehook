@@ -1,0 +1,14 @@
+version: '3.9'
+
+
+services:
+
+  redis:
+    image: redis:alpine
+
+  api:
+    build: ./api/
+    container_name: api
+    restart: always
+    port: 
+      - "8000:8000" 
