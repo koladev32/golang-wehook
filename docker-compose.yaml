@@ -10,5 +10,5 @@ services:
     build: ./api/
     container_name: api
     restart: always
-    port: 
+    ports: 
       - "8000:8000" 
