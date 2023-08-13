@@ -1,6 +1,5 @@
 version: '3.9'
 
-
 services:
 
   redis:
@@ -9,6 +8,17 @@ services:
   api:
     build: ./api/
     container_name: api
+    env_file:
+      - .env
     restart: always
     ports: 
-      - "8000:8000" 
+      - "8000:8000"
+    depends_on:
+      - webhook
+
+  webhook:
+    build: ./webhook/
+    env_file:
+      - .env
+    depends_on:
+      - redis

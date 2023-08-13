@@ -27,7 +27,7 @@ type WebhookPayload struct {
 // unmarshals them into the WebhookPayload type, and sends them to the specified URL.
 func Subscribe(ctx context.Context, client *redis.Client) error {
 	// Subscribe to the "webhooks" channel in Redis
-	pubSub := client.Subscribe(ctx, "webhooks")
+	pubSub := client.Subscribe(ctx, "payments")
 
 	// Ensure that the PubSub connection is closed when the function exits
 	defer func(pubSub *redis.PubSub) {
