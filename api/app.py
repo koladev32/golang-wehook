@@ -9,7 +9,7 @@ import redis
 
 def get_payment(): 
     return {
-    'url': 'https://webhook.site/d2246316-022b-4674-a6d0-121e463c41c6',
+    'url': os.getenv("WEBHOOK_ADDRESS", ""),
     'webhookId': uuid.uuid4().hex,
     'data': {
         'id': uuid.uuid4().hex,
