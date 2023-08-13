@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"log"
 
-	"webhook/sender"
-
 	"github.com/go-redis/redis/v8"
 )
 
@@ -25,7 +23,7 @@ type WebhookPayload struct {
 
 // Subscribe subscribes to the "webhooks" channel in Redis, listens for messages,
 // unmarshals them into the WebhookPayload type, and sends them to the specified URL.
-func Subscribe(ctx context.Context, client *redis.Client) error {
+func Subscribe(ctx context.Context, client *redis.Client, webhookQueue chan WebhookPayload) error {
 	// Subscribe to the "webhooks" channel in Redis
 	pubSub := client.Subscribe(ctx, "payments")
 
@@ -53,11 +51,6 @@ func Subscribe(ctx context.Context, client *redis.Client) error {
 			continue // Continue with the next message if there's an error unmarshalling
 		}
 
-		// Create a goroutine to send the webhook using the payload data
-		go func(p WebhookPayload) {
-			if err := sender.SendWebhook(p.Data, p.Url, p.WebhookId); err != nil {
-				log.Println("Error sending webhook:", err)
-			}
-		}(payload)
+		webhookQueue <- payload // Sending the payload to the channel
 	}
 }
