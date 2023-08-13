@@ -12,8 +12,8 @@ import (
 func ProcessWebhooks(ctx context.Context, webhookQueue chan redisClient.WebhookPayload) {
 	for payload := range webhookQueue {
 		go func(p redisClient.WebhookPayload) {
-			backoffTime := time.Millisecond * 100 // starting backoff time
-			maxBackoffTime := time.Second * 5     // maximum backoff time
+			backoffTime := time.Second  // starting backoff time
+			maxBackoffTime := time.Hour // maximum backoff time
 			retries := 0
 			maxRetries := 5
 
@@ -34,6 +34,7 @@ func ProcessWebhooks(ctx context.Context, webhookQueue chan redisClient.WebhookP
 
 				// Double the backoff time for the next iteration, capped at the max
 				backoffTime *= 2
+				log.Println(backoffTime)
 				if backoffTime > maxBackoffTime {
 					backoffTime = maxBackoffTime
 				}

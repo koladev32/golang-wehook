@@ -3,6 +3,7 @@ package sender
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"log"
 	"net/http"
@@ -50,6 +51,10 @@ func SendWebhook(data interface{}, url string, webhookId string) error {
 	}
 
 	log.Println(status)
+
+	if status == "failed" {
+		return errors.New(status)
+	}
 
 	return nil
 }
